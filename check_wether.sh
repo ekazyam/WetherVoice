@@ -1,8 +1,8 @@
 #!/bin/bash
 ################################
 # Author: Rum Coke
-# Data  : 2015/07/04
-# Ver   : 0.9.3
+# Data  : 2015/10/18
+# Ver   : 1.0.0
 ################################
 
 ##################
@@ -145,9 +145,25 @@ function checkRainmeter()
 			# Set Rain Level. and Return function.
 			INDEX_RAIN_LEVEL_TODAY=${X}
 			MSG_VOICE=${MSG_VOICE}${MSG_RAIN_METER_MSG[$INDEX_RAIN_LEVEL_TODAY]}
+
+			# Check Door Opened.
+			checkDoorOpen
+
 			return 0
 		fi
 	done
+}
+
+##################
+# Check Door Open Function
+##################
+function checkDoorOpen()
+{
+	GPIO=22
+	if [ `cat /sys/class/gpio/gpio${GPIO}/value` -eq 0 ]
+	then
+		MSG_VOICE=${MSG_VOICE}${MSG_DOOR}
+	fi
 }
 
 ##################
@@ -190,6 +206,7 @@ MSG_CLOUD='今日は曇りみたいっす。'
 MSG_RAIN='に雨が降るので注意。'
 MSG_RAIN_ALL='今日はずっと雨みたいっす。'
 MSG_SNOW='今日は雪が降るみたいですよ。'
+MSG_DOOR='あと、ベランダが開けっ放しっす。'
 MSG_ERR='お天気サーバが落ちてるかも。'
 MSG_VOICE=''
 
